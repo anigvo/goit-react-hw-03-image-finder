@@ -1,8 +1,10 @@
-import {ImageGalleryItem} from 'components/ImageGalleryItem/ImageGalleryItem'
+import PropTypes from 'prop-types';
+import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem'
+import { List } from './ImageGallery.styled'
 
 export const ImageGallery = ({ searchValue }) => {
     return (
-      <ul className="gallery">
+      <List className="gallery">
         {searchValue.map(item => (
           <ImageGalleryItem
             key={item.id}
@@ -11,9 +13,19 @@ export const ImageGallery = ({ searchValue }) => {
                 tags={item.tags}
           />
         ))}
-      </ul>
+      </List>
     );
 };
 
+ImageGallery.propTypes = {
+  searchValue: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
 
 

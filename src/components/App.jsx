@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { InfinitySpin } from 'react-loader-spinner';
+import { animateScroll as scroll } from 'react-scroll';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from 'components/ImageGallery/ImageGallery';
 import { Button } from 'components/Button/Button';
+import { Loader } from 'components/Loader/Loader'
+import { AppContainer, FailLoad } from './App.styled.jsx';
 
 class App extends Component {
   state = {
@@ -61,6 +63,11 @@ class App extends Component {
               isFind: prevState.response.length === 0,
             }));
           });
+        scroll.scrollToBottom({
+          duration: 500, // Продолжительность анимации в миллисекундах
+          delay: 100, // Задержка перед началом анимации
+          smooth: 'easeInOutQuart', // Тип плавности анимации
+        });
       }
     );
   };
@@ -71,16 +78,16 @@ class App extends Component {
 
   render() {
     return (
-      <>
+      <AppContainer>
         <Searchbar onSubmit={this.onSubmit} />
-        {this.state.isFind ? <p>Упс, не найдено</p> : null}
+        {this.state.isFind && <FailLoad>Упс, за таким запитом немає результатів :( </FailLoad>}
         <ImageGallery searchValue={this.state.response} />
         {this.state.isLoading ? (
-          <InfinitySpin width="200" color="#4fa94d" />
+          <Loader />
         ) : this.state.showLoadMore ? (
           <Button loadMore={this.loadMore} />
         ) : null}
-      </>
+      </AppContainer>
     );
   }
 }
